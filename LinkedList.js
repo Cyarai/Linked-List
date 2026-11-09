@@ -75,15 +75,128 @@ class LinkedList {
 
     return current.value;
   }
+
+  at(index) {
+    if (index < 0 || index >= this.size()) {
+      return undefined;
+    }
+
+    let current = this.head;
+    let count = 0;
+
+    while (count < index) {
+      current = current.next;
+      count++;
+    }
+
+    return current.value;
+  }
+
+  pop() {
+    if (this.head === null) {
+      return undefined;
+    }
+
+    const removeValue = this.head.value;
+    this.head = this.head.next;
+
+    return removeValue;
+  }
+
+  contains(value) {
+    let current = this.head;
+
+    while (current !== null) {
+      if (current.value === value) {
+        return true;
+      }
+      current = current.value;
+    }
+    return false;
+  }
+
+  findIndex(value) {
+    let current = this.head;
+    let index = 0;
+
+    while (current !== null) {
+      if (current.value === value) {
+        return index;
+      }
+
+      current = current.next;
+      index++;
+    }
+    return -1;
+  }
+
+  toString() {
+    if (this.head === null) {
+      return "";
+    }
+
+    let current = this.head;
+    let result = "";
+
+    while (current !== null) {
+      result += `( ${current.value} ) -> `;
+      current = current.next;
+    }
+
+    return result + "null";
+  }
+
+  insertAt(index, ...values) {
+    if (index < 0 || index > this.size()) {
+      return;
+    }
+
+    let previous = null;
+    let current = this.head;
+    let count = 0;
+
+    while (count < index) {
+      previous = current;
+      current = current.next;
+      count++;
+    }
+
+    for (const value of values) {
+      const newNode = new Node(value);
+
+      newNode.next = current;
+
+      if (previous === null) {
+        this.head = newNode;
+      } else {
+        previous.next = newNode;
+      }
+
+      previous = newNode;
+    }
+  }
+
+  removeAt(index) {
+    if (index < 0 || index >= this.size()) {
+      throw new RangeError("Index out of bounds");
+    }
+    let current = this.head;
+    let previous = null;
+    let count = 0;
+
+    while (count < index) {
+      previous = current;
+      current = current.next;
+      count++;
+    }
+
+    if (previous === null) {
+      this.head = current.next;
+    } else {
+      previous.next = current.next;
+    }
+
+    return current.value;
+  }
 }
-const list = new LinkedList();
-// console.log(list.getHead());
-list.append("John");
-list.append("Mary");
-list.append("Alex");
-// list.prepend("Mike");
-// console.log(list.getHead());
-
-console.log(`the last value: ${list.getLast()}`);
-
-list.printList();
+export default LinkedList;
